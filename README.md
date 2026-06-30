@@ -153,6 +153,9 @@ Stateful socket connections require synchronization to scale across multiple con
 ### Coding Workspace and Daily Puzzle
 ![Daily Puzzle Interface](./assets/puzzle.png)
 
+### Practice Question Submission
+![Practice Question Submission](./assets/practice_que_submission.png)
+
 ---
 
 ## Directory Layout
