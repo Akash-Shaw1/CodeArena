@@ -220,10 +220,19 @@ export async function processSubmissionJob(
     cutoffDate.setDate(cutoffDate.getDate() - 35);
     const cutoffStr = cutoffDate.toISOString().split("T")[0];
 
-    await UserModel.findByIdAndUpdate(userId, {
-      $addToSet: { solved_dates: todayStr },
-      $pull: { solved_dates: { $lt: cutoffStr } },
-    });
+    await UserModel.findByIdAndUpdate(userId, [
+      {
+        $set: {
+          solved_dates: {
+            $filter: {
+              input: { $setUnion: [{ $ifNull: ["$solved_dates", []] }, [todayStr]] },
+              as: "date",
+              cond: { $gte: ["$$date", cutoffStr] },
+            },
+          },
+        },
+      },
+    ]);
   }
 
   await SubmissionsModel.findOneAndUpdate(
